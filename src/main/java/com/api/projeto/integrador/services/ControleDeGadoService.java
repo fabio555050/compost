@@ -24,8 +24,60 @@ public class ControleDeGadoService {
         return controleDeGadoRepository.save(controleDeGado);
     }
 
+    public List<ControleDeGado> buscarTodos() {
+        return controleDeGadoRepository.findAll();
+    }
+
     public List<ControleDeGado> buscarPorNumeroIdentificacao(String numeroIdentificacao) {
         return controleDeGadoRepository.findByNumeroIdentificacao(numeroIdentificacao);
+    }
+
+    public double calcularMediaTemperatura() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroPropriedade)
+                .average()
+                .orElse(Double.NaN);
+    }
+
+    public double calcularMediaUmidade() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroIdentificacao)
+                .average()
+                .orElse(Double.NaN);
+    }
+
+    public double calcularTemperaturaMaxima() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroPropriedade)
+                .max()
+                .orElse(Double.NaN);
+    }
+
+    public double calcularUmidadeMaxima() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroIdentificacao)
+                .max()
+                .orElse(Double.NaN);
+    }
+
+    public double calcularTemperaturaMinima() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroPropriedade)
+                .min()
+                .orElse(Double.NaN);
+    }
+
+    public double calcularUmidadeMinima() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+        return registros.stream()
+                .mapToDouble(ControleDeGado::getNumeroIdentificacao)
+                .min()
+                .orElse(Double.NaN);
     }
 
     /*

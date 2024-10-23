@@ -66,16 +66,26 @@ public class ControleDeGado implements Serializable {
 		this.cpfProdutor = cpfProdutor;
 	}
 
-	public String getNumeroPropriedade() {
-		return numeroPropriedade;
+	public double getNumeroPropriedade() {
+		try {
+			return Double.parseDouble(this.numeroPropriedade);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return 0.0;
+		}
 	}
 
 	public void setNumeroPropriedade(String numeroPropriedade) {
 		this.numeroPropriedade = numeroPropriedade;
 	}
 
-	public String getNumeroIdentificacao() {
-		return numeroIdentificacao;
+	public double getNumeroIdentificacao() {
+		try {
+			return Double.parseDouble(this.numeroIdentificacao);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			return 0.0;
+		}
 	}
 
 	public void setNumeroIdentificacao(String numeroIdentificacao) {

@@ -75,8 +75,8 @@
       width: 20%;
       padding-bottom: 20px;
       margin-right: 4%;
-      margin-left: 10%;
-      margin-top: 50px;
+      margin-left: 6%;
+      margin-top: 40px;
     }
 
 
@@ -145,9 +145,9 @@
       background-color: #223b48;
       text-align: center;
       color: white;
-      border-radius: 20px;
-      padding-bottom: 20px;
-      padding-top: 20px;
+      border-radius: 0px;
+      padding-bottom: 10px;
+      padding-top: 10px;
 
 
     }
@@ -250,7 +250,17 @@
 
       text-align: center;
       margin: auto;
+    }
 
+    #linha1 {
+      color: white;
+      background-color: #223b48;
+      padding: 5px;
+    }
+
+    .linha2 {
+      background-color: #EFEDED;
+      padding: 5px;
     }
 
     th {
@@ -372,6 +382,7 @@
       font-size: 21px;
     }
 
+
     #meuTexto {
       margin-top: 0px;
       font-size: 19px;
@@ -424,7 +435,94 @@
         $(this).val("");
       });
     });
+
   </script>
+
+  <select id="dataFilter" onchange="drawStuff()">
+    <option value="all">Todos</option>
+    <option value="top10">Top 10</option>
+    <!-- Adicione outros filtros conforme necessário -->
+  </select>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', { 'packages': ['corechart', 'bar'] });
+    google.charts.setOnLoadCallback(drawStuff);
+
+    async function drawStuff() {
+      const data = await fetchAnimalData();
+      var button = document.getElementById('change-chart');
+      var chartDiv = document.getElementById('chart_div');
+
+      var chartData = google.visualization.arrayToDataTable(data);
+      var materialOptions = {
+        width: '100%',
+        chart: {
+          title: 'Análise de Animais',
+          subtitle: 'Dados do controle de gado'
+        },
+        series: {
+          0: { axis: 'temperatura' },
+          1: { axis: 'umidade' }
+        },
+        axes: {
+          y: {
+            temperatura: { label: 'Temperatura (°C)' },
+            umidade: { side: 'right', label: 'Umidade (%)' }
+          }
+        }
+      };
+
+      var classicOptions = {
+        width: '100%',
+        series: {
+          0: { targetAxisIndex: 0 },
+          1: { targetAxisIndex: 1 }
+        },
+        title: 'Análise de Animais - Temperatura e Umidade',
+        vAxes: {
+          0: { title: 'Temperatura (°C)' },
+          1: { title: 'Umidade (%)' }
+        }
+      };
+
+      function drawMaterialChart() {
+        var materialChart = new google.charts.Bar(chartDiv);
+        materialChart.draw(chartData, google.charts.Bar.convertOptions(materialOptions));
+        button.innerText = 'Mudar para Classic';
+        button.onclick = drawClassicChart;
+      }
+
+      function drawClassicChart() {
+        var classicChart = new google.visualization.ColumnChart(chartDiv);
+        classicChart.draw(chartData, classicOptions);
+        button.innerText = 'Mudar para Material';
+        button.onclick = drawMaterialChart;
+      }
+
+      drawMaterialChart();
+    }
+
+    async function fetchAnimalData() {
+      try {
+        const response = await fetch('/animal/dados');
+        const data = await response.json();
+        console.log('Dados recebidos:', data); // Verifique a estrutura dos dados
+
+        const chartData = [['Data', 'temperatura', 'umidade']];
+
+        data.forEach(animal => {
+          chartData.push([animal.numeroProdutor, parseFloat(animal.numeroPropriedade), parseFloat(animal.numeroIdentificacao)]);
+        });
+
+        return chartData;
+      } catch (error) {
+        console.error('Erro ao processar os dados dos animais:', error);
+        return [];
+      }
+    }
+  </script>
+
 
 </head>
 
@@ -498,31 +596,14 @@
       </script>
   </div>
   <!-- TradingView Widget END -->
+  <h2>ANÁLISE DE DADOS TEMPERATURA E UMIDADE</h2>
+
+  <button id="change-chart">Change to Classic</button>
+  <br><br>
+  <div id="chart_div" style="width: 100%; height: 500px;"></div>
 
   <div class="container">
     <div id="listaAnimais">
-
-
-      <h2>ANÁLISE DE DADOS TEMPERATURA E UMIDADE
-        <p></p>
-
-        <button onclick="consultarTotalAnimais()">Consultar</button>
-      </h2>
-
-      <form id="formularioEdicao" style="display: none;">
-        <label for="campoNumeroProdutor">Número Produtor:</label>
-        <input type="text" id="campoNumeroProdutor">
-        <label for="campoNomeAnimal">Nome do Animal:</label>
-        <input type="text" id="campoNomeAnimal">
-        <label for="campoDataNascimento">Data de Nascimento:</label>
-        <input type="text" id="campoDataNascimento">
-        <label for="campoPeso">Peso:</label>
-        <input type="text" id="campoPeso">
-        <label for="campoNumeroPropriedade">Número da Propriedade:</label>
-        <input type="text" id="campoNumeroPropriedade">
-        <button type="button" onclick="salvarEdicao()">Salvar</button>
-      </form>
-
       <div id="divConteudo">
         <table id="tabelaAnimais">
           <thead>
@@ -551,34 +632,71 @@
     </div>
     <div>
       <table id="analise">
-        <thead>
-          <tr>
-            <th style="width: 14%;">MÉDIA TEMPERATURA</th>
-          </tr>
-          <tr>
-            <th>
-              <id="txtColuna1" />22.74
-            </th>
-          </tr>
-          <br>
-          </br>
-          <tr>
-            <th style="width: 14%;">MÉDIA TEMPERATURA</th>
-          </tr>
-          <tr>
-            <th>
-              <id="txtColuna1" />22.74
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-        <tbody>
-          <!-- Aqui serão adicionadas as linhas da tabela -->
-        </tbody>
 
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">TEMPERATURA MÉDIA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="mediaTemperatura"></th>
+        </tr>
       </table>
+      <br>
+      <table id="analise">
+
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">UMIDADE MÉDIA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="mediaUmidade"></th>
+        </tr>
+      </table>
+      <br>
+      <table id="analise">
+
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">TEMPERATURA MÁXIMA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="temperaturaMaxima"></th>
+        </tr>
+      </table>
+      <br>
+      <table id="analise">
+
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">UMIDADE MÁXIMA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="umidadeMaxima"></th>
+        </tr>
+      </table>
+      <br>
+      <table id="analise">
+
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">TEMPERATURA MÍNIMA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="temperaturaMinima"></th>
+        </tr>
+      </table>
+      <br>
+      <table id="analise">
+
+        <tr id="linha1">
+          <th id="linha1" style="width: 14%;">UMIDADE MÍNIMA</th>
+        </tr>
+        <tr id="linha2">
+          <th class="linha2" id="umidadeMinima"></th>
+        </tr>
+      </table>
+      <br>
+      <button id="change-chart">Change to Classic</button>
+      <br><br>
+      <div id="chart_div" style="width: 800px; height: 500px;"></div>
     </div>
   </div>
+
 
 
 
@@ -613,237 +731,95 @@
     const qtdBois = document.querySelector("#qtdBois");
     const qtdTouros = document.querySelector("#qtdTouros");
 
-    formAnimal.addEventListener("submit", (event) => {
-      event.preventDefault();
 
-      if (validateForm()) {
-        const formData = new FormData(formAnimal);
 
-        fetch("/animal", {
-          method: "POST",
-          body: JSON.stringify(Object.fromEntries(formData.entries())),
-          headers: { "Content-type": "application/json; charset=UTF-8" },
-        })
-          .then((response) => {
-            if (response.ok) {
-              consultarTotalAnimais();
-              alert("Animal cadastrado com sucesso!");
-              formAnimal.reset();
-            } else {
-              alert("Erro ao cadastrar animal!");
-            }
-          });
+    async function obterMediaTemperatura() {
+      try {
+        const response = await fetch('/animal/temperatura/media');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const media = await response.json();
+        document.getElementById('mediaTemperatura').textContent = ` ${media.toFixed(1)} °C`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
-    });
-
-    function cpf(v) {
-      v = v.replace(/\D/g, "")                    //Remove tudo o que não é dígito
-      v = v.replace(/(\d{3})(\d)/, "$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-      v = v.replace(/(\d{3})(\d)/, "$1.$2")       //Coloca um ponto entre o terceiro e o quarto dígitos
-      //de novo (para o segundo bloco de números)
-      v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2") //Coloca um hífen entre o terceiro e o quarto dígitos
-      return v
     }
 
-    function somenteNumeros(event) {
-      var er = /[^0-9.]/;
-      if (er.test(event.key)) {
-        return false
+    async function obterTemperaturaMaxima() {
+      try {
+        const response = await fetch('/animal/temperatura/maxima');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const temperaturaMaxima = await response.json();
+        document.getElementById('temperaturaMaxima').textContent = ` ${temperaturaMaxima.toFixed(1)} °C`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
-      return true;
     }
 
-    function lettersOnly(evt) {
-      evt = evt || event;
-      var charCode = evt.charCode || evt.keyCode || evt.which || 0;
-
-      // Verificar se o código do caractere está dentro da faixa das letras (maiúsculas e minúsculas) ou caracteres acentuados
-      if (
-        (charCode < 65 || charCode > 90) && // letras maiúsculas
-        (charCode < 97 || charCode > 122) && // letras minúsculas
-        (charCode !== 192 && charCode !== 193 && charCode !== 194 &&
-          charCode !== 195 && charCode !== 196 && charCode !== 197 && charCode !== 198 &&
-          charCode !== 199 && charCode !== 200 && charCode !== 201 && charCode !== 202 &&
-          charCode !== 203 && charCode !== 204 && charCode !== 205 && charCode !== 206 &&
-          charCode !== 207 && charCode !== 208 && charCode !== 209 && charCode !== 210 &&
-          charCode !== 211 && charCode !== 212 && charCode !== 213 && charCode !== 214 &&
-          charCode !== 216 && charCode !== 217 && charCode !== 218 && charCode !== 219 &&
-          charCode !== 220 && charCode !== 221 && charCode !== 222 && charCode !== 223 &&
-          charCode !== 224 && charCode !== 225 && charCode !== 226 && charCode !== 227 &&
-          charCode !== 228 && charCode !== 229 && charCode !== 230 && charCode !== 231 &&
-          charCode !== 232 && charCode !== 233 && charCode !== 234 && charCode !== 235 &&
-          charCode !== 236 && charCode !== 237 && charCode !== 238 && charCode !== 239 &&
-          charCode !== 240 && charCode !== 241 && charCode !== 242 && charCode !== 243 &&
-          charCode !== 244 && charCode !== 245 && charCode !== 246 && charCode !== 248 &&
-          charCode !== 249 && charCode !== 250 && charCode !== 251 && charCode !== 252 &&
-          charCode !== 253 && charCode !== 254 && charCode !== 255)
-      ) {
-        return false;
+    async function obterTemperaturaMinima() {
+      try {
+        const response = await fetch('/animal/temperatura/minima');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const temperaturaMinima = await response.json();
+        document.getElementById('temperaturaMinima').textContent = ` ${temperaturaMinima.toFixed(1)} °C`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
-      return true;
     }
 
-
-    function validateForm() {
-      const numeroProdutor = document.querySelector("#numeroProdutor").value;
-      const cpfProdutor = document.querySelector("#cpfProdutor").value;
-      const numeroPropriedade = document.querySelector("#numeroPropriedade").value;
-      const numeroIdentificacao = document.querySelector("#numeroIdentificacao").value;
-      const nomeAnimal = document.querySelector("#nomeAnimal").value;
-      const dataNascimento = document.querySelector("#dataNascimento").value;
-      const sexo = document.querySelector("#sexo").value;
-      const peso = document.querySelector("#peso").value;
-
-      // Validação do número do produtor
-      if (numeroProdutor.maxlength == 7) {
-        alert("O número do produtor deve ter 7 dígitos.");
-        return false;
+    async function obterMediaUmidade() {
+      try {
+        const response = await fetch('/animal/umidade/media');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const mediaUmidade = await response.json();
+        document.getElementById('mediaUmidade').textContent = ` ${mediaUmidade.toFixed(1)} %`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
+    }
 
-      // Validação do CPF do produtor
-      if (cpfProdutor.length !== 11) {
-        alert("O CPF do produtor deve ter 11 dígitos.");
-        return false;
+    async function obterUmidadeMaxima() {
+      try {
+        const response = await fetch('/animal/umidade/maxima');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const umidadeMaxima = await response.json();
+        document.getElementById('umidadeMaxima').textContent = ` ${umidadeMaxima.toFixed(1)} %`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
+    }
 
-      // Validação do número da propriedade
-      if (numeroPropriedade === "") {
-        alert("O número da propriedade é obrigatório.");
-        return false;
+    async function obterUmidadeMinima() {
+      try {
+        const response = await fetch('/animal/umidade/minima');
+        if (!response.ok) {
+          throw new Error('Erro ao buscar a média das temperaturas');
+        }
+        const umidadeMinima = await response.json();
+        document.getElementById('umidadeMinima').textContent = ` ${umidadeMinima.toFixed(1)} %`;
+      } catch (error) {
+        console.error('Erro:', error);
       }
-
-      // Validação do número de identificação do animal
-      if (numeroIdentificacao === "") {
-        alert("O número de identificação do animal é obrigatório.");
-        return false;
-      }
-
-      // Validação do nome do animal
-      if (nomeAnimal === "") {
-        alert("O nome do animal é obrigatório.");
-        return false;
-      }
-
-      // Validação da data de nascimento
-      if (dataNascimento === "") {
-        alert("A data de nascimento é obrigatória.");
-        return false;
-      }
-
-      // Validação do sexo
-      if (sexo === "") {
-        alert("O sexo é obrigatório.");
-        return false;
-      }
-
-      // Validação do peso
-      if (peso === "" || peso <= 0) {
-        alert("O peso é obrigatório e deve ser maior que zero.");
-        return false;
-      }
-
-      return true;
     }
 
 
+    // Chama a função para buscar a média quando a página é carregada
 
 
-    btnConsultar.addEventListener("click", () => {
+    /*btnConsultar.addEventListener("click", () => {
       const dataConsulta = document.querySelector("#dataConsulta").value;
-
-
-      fetch(`/animal/disponiveis/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const animais = (data !== 1) ? "animais estarão disponíveis" : "animal estará disponível";
-
-
-
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdCabeças.innerHTML = `Em ${dataFormatada}, ${data} ${animais} para abate`;
-
-
-          // Mostra a div com a resposta e ajusta a altura
-          const divQtdCabeças = document.querySelector("#disponiveis");
-          divQtdCabeças.style.display = "block";
-          divQtdCabeças.style.height = "auto";
-
-
-        });
-      fetch(`/animal/vitelos/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdVitelos.innerHTML = `Vitelos:  ${data}`;
-
-
-          const divQtdvitelos = document.querySelector("#disponiveis");
-          divQtdvitelos.style.display = "block";
-          divQtdvitelos.style.height = "auto";
-        });
-
-      fetch(`/animal/superPrecoce/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdSuperPrecoces.innerHTML = `Novilhos Super Precoce:  ${data}`;
-
-
-          const divQtdSuperPrecoces = document.querySelector("#disponiveis");
-          divQtdSuperPrecoces.style.display = "block";
-          divQtdSuperPrecoces.style.height = "auto";
-        });
-
-      fetch(`/animal/precoce/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdPrecoces.innerHTML = `Novilhos Precoce:  ${data}`;
-
-
-          const divQtdPrecoces = document.querySelector("#disponiveis");
-          divQtdPrecoces.style.display = "block";
-          divQtdPrecoces.style.height = "auto";
-        });
-
-      fetch(`/animal/novilhos/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdNovilhos.innerHTML = `Novilhos:  ${data}`;
-
-
-          const divQtdNovilhos = document.querySelector("#disponiveis");
-          divQtdNovilhos.style.display = "block";
-          divQtdNovilhos.style.height = "auto";
-        });
-
-      fetch(`/animal/bois/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdBois.innerHTML = `Bois:  ${data}`;
-
-
-          const divQtdBois = document.querySelector("#disponiveis");
-          divQtdBois.style.display = "block";
-          divQtdBois.style.height = "auto";
-        });
-
-      fetch(`/animal/touros/${dataConsulta}?timeZone=America/Sao_Paulo`)
-        .then((response) => response.json())
-        .then((data) => {
-          const dataFormatada = new Date(dataConsulta + 'T24:00:00.000Z').toLocaleDateString('pt-BR', { timeZone: 'America/Sao_Paulo' });
-          qtdTouros.innerHTML = `Touros:  ${data}`;
-
-
-          const divQtdTouros = document.querySelector("#disponiveis");
-          divQtdTouros.style.display = "block";
-          divQtdTouros.style.height = "auto";
-        });
-    });
+    });*/
     // Chama a função consultarTotalAnimais quando a página carregar
-    window.onload = consultarTotalAnimais;
+
 
     // Função para consultar o total de animais com paginação manual
     async function consultarTotalAnimais() {
@@ -900,8 +876,16 @@
 
     }
 
-    // Chama a função consultarTotalAnimais quando a página carregar
-    window.onload = consultarTotalAnimais;
+    // Função para carregar ambas as funcionalidades ao carregar a página
+    window.onload = () => {
+      obterMediaTemperatura();
+      consultarTotalAnimais();
+      obterMediaUmidade();
+      obterTemperaturaMaxima();
+      obterUmidadeMaxima();
+      obterTemperaturaMinima();
+      obterUmidadeMinima();
+    };
 
     // Adiciona os campos de filtro
 

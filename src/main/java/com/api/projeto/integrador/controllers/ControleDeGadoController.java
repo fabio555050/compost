@@ -1,19 +1,9 @@
 package com.api.projeto.integrador.controllers;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Map;
-import java.util.TimeZone;
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.projeto.integrador.models.ControleDeGado;
 import com.api.projeto.integrador.services.ControleDeGadoService;
+import java.util.List;
+
+import antlr.collections.List;
 
 @RestController
 @RequestMapping("/animal")
@@ -35,6 +28,49 @@ public class ControleDeGadoController {
         ControleDeGado controleDeGadoSalvo = controleDeGadoService.salvar(controleDeGado);
         return ResponseEntity.ok(controleDeGadoSalvo);
     }
+
+    @GetMapping("/dados")
+    public ResponseEntity<List<ControleDeGado>> obterDadosAnimais() {
+        List<ControleDeGado> registros = controleDeGadoService.buscarTodos();
+        return ResponseEntity.ok(registros);
+    }
+
+    @GetMapping("/temperatura/media")
+    public ResponseEntity<Double> obterMediaTemperatura() {
+        double media = controleDeGadoService.calcularMediaTemperatura();
+        return ResponseEntity.ok(media);
+    }
+
+    @GetMapping("/temperatura/maxima")
+    public ResponseEntity<Double> obterTemperaturaMaxima() {
+        double temperaturaMaxima = controleDeGadoService.calcularTemperaturaMaxima();
+        return ResponseEntity.ok(temperaturaMaxima);
+    }
+
+    @GetMapping("/temperatura/minima")
+    public ResponseEntity<Double> obterTemperaturaMinima() {
+        double temperaturaMinima = controleDeGadoService.calcularTemperaturaMinima();
+        return ResponseEntity.ok(temperaturaMinima);
+    }
+
+    @GetMapping("/umidade/media")
+    public ResponseEntity<Double> obterMediaUmidade() {
+        double mediaUmidade = controleDeGadoService.calcularMediaUmidade();
+        return ResponseEntity.ok(mediaUmidade);
+    }
+
+    @GetMapping("/umidade/maxima")
+    public ResponseEntity<Double> obterUmidadeMaxima() {
+        double umidadeMaxima = controleDeGadoService.calcularUmidadeMaxima();
+        return ResponseEntity.ok(umidadeMaxima);
+    }
+
+    @GetMapping("/umidade/minima")
+    public ResponseEntity<Double> obterUmidadeMinima() {
+        double umidadeMinima = controleDeGadoService.calcularUmidadeMinima();
+        return ResponseEntity.ok(umidadeMinima);
+    }
+
     /*
      * @GetMapping("/classificacao/{classificacao}")
      * public ResponseEntity<Integer> contarPorClassificacao(@PathVariable String
