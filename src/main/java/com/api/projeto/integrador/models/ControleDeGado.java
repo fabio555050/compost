@@ -12,71 +12,49 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "CONTROLE_DE_GADO")
+@Table(name = "TEMPERATURA")
 public class ControleDeGado implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private UUID id;
+	private int id;
 
-	@Column(name = "numero_produtor")
-	private int numeroProdutor;
+	@Column(name = "data")
+	private String numeroProdutor;
 
-	@Column(name = "cpf_produtor")
+	@Column(name = "hora")
 	private String cpfProdutor;
 
-	@Column(name = "numero_propriedade")
+	@Column(name = "temperatura")
 	private String numeroPropriedade;
 
-	@Column(name = "numero_identificacao")
+	@Column(name = "umidade")
 	private String numeroIdentificacao;
-
-	@Column(name = "nome_animal")
-	private String nomeAnimal;
-
-	@Column(name = "data_nascimento")
-	private Date dataNascimento;
-
-	@Column(name = "sexo")
-	private String sexo;
-
-	@Column(name = "peso")
-	private double peso;
-
-	@Column(name = "classificacao")
-	private String classificacao;
 
 	// Construtor vazio
 	public ControleDeGado() {
 	}
 
 	// Construtor com campos
-	public ControleDeGado(int numeroProdutor, String cpfProdutor, String numeroIdentificacao, String nomeAnimal,
-			Date dataNascimento, String sexo, double peso, String classificacao) {
+	public ControleDeGado(String numeroProdutor, String numeroIdentificacao, String cpfProdutor) {
 		this.numeroProdutor = numeroProdutor;
 		this.cpfProdutor = cpfProdutor;
 		this.numeroIdentificacao = numeroIdentificacao;
-		this.nomeAnimal = nomeAnimal;
-		this.dataNascimento = dataNascimento;
-		this.sexo = sexo;
-		this.peso = peso;
-		this.classificacao = classificacao;
 	}
 
-	public UUID getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(UUID id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public int getNumeroProdutor() {
+	public String getNumeroProdutor() {
 		return numeroProdutor;
 	}
 
-	public void setNumeroProdutor(int numeroProdutor) {
+	public void setNumeroProdutor(String numeroProdutor) {
 		this.numeroProdutor = numeroProdutor;
 	}
 
@@ -104,53 +82,13 @@ public class ControleDeGado implements Serializable {
 		this.numeroIdentificacao = numeroIdentificacao;
 	}
 
-	public String getNomeAnimal() {
-		return nomeAnimal;
-	}
-
-	public void setNomeAnimal(String nomeAnimal) {
-		this.nomeAnimal = nomeAnimal;
-	}
-
-	public Date getDataNascimento() {
-		return dataNascimento;
-	}
-
-	public void setDataNascimento(Date dataNascimento) {
-		this.dataNascimento = dataNascimento;
-	}
-
-	public String getSexo() {
-		return sexo;
-	}
-
-	public void setSexo(String sexo) {
-		this.sexo = sexo;
-	}
-
-	public double getPeso() {
-		return peso;
-	}
-
-	public void setPeso(double peso) {
-		this.peso = peso;
-	}
-
-	public String getClassificacao() {
-		return classificacao;
-	}
-
-	public void setClassificacao(String classificacao) {
-		this.classificacao = classificacao;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
 
 	@Override
 	public String toString() {
-		return id + "," + nomeAnimal + "," + dataNascimento + "," + peso;
+		return id + "," + numeroProdutor + "," + cpfProdutor + "," + numeroPropriedade;
 	}
 
 }

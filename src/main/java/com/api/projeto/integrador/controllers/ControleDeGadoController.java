@@ -35,108 +35,133 @@ public class ControleDeGadoController {
         ControleDeGado controleDeGadoSalvo = controleDeGadoService.salvar(controleDeGado);
         return ResponseEntity.ok(controleDeGadoSalvo);
     }
-
-    @GetMapping("/classificacao/{classificacao}")
-    public ResponseEntity<Integer> contarPorClassificacao(@PathVariable String classificacao) {
-        int quantidade = controleDeGadoService.contarPorClassificacao(classificacao);
-        return ResponseEntity.ok(quantidade);
-    }
-
-    @GetMapping("/disponiveis/{data}")
-
-    public ResponseEntity<Integer> calcularCabeçasDisponiveis(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int cabeçasDisponiveis = controleDeGadoService.calcularCabeçasDisponiveis(calendar.getTime());
-        return ResponseEntity.ok(cabeçasDisponiveis);
-    }
-
-    @GetMapping("/vitelos/{data}")
-
-    public ResponseEntity<Integer> calcularVitelos(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int vitelosDisponiveis = controleDeGadoService.calcularVitelos(calendar.getTime());
-        return ResponseEntity.ok(vitelosDisponiveis);
-    }
-
-    @GetMapping("/superPrecoce/{data}")
-
-    public ResponseEntity<Integer> calcularNovilhosSuperPrecoce(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int NovilhosSuperPrecoceDisponiveis = controleDeGadoService.calcularNovilhosSuperPrecoce(calendar.getTime());
-        return ResponseEntity.ok(NovilhosSuperPrecoceDisponiveis);
-    }
-
-    @GetMapping("/precoce/{data}")
-
-    public ResponseEntity<Integer> calcularNovilhosPrecoce(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int NovilhosPrecoceDisponiveis = controleDeGadoService.calcularNovilhosPrecoce(calendar.getTime());
-        return ResponseEntity.ok(NovilhosPrecoceDisponiveis);
-    }
-
-    @GetMapping("/novilhos/{data}")
-
-    public ResponseEntity<Integer> calcularNovilhos(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int NovilhosDisponiveis = controleDeGadoService.calcularNovilhos(calendar.getTime());
-        return ResponseEntity.ok(NovilhosDisponiveis);
-    }
-
-    @GetMapping("/bois/{data}")
-
-    public ResponseEntity<Integer> calcularBois(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int boisDisponiveis = controleDeGadoService.calcularBois(calendar.getTime());
-        return ResponseEntity.ok(boisDisponiveis);
-    }
-
-    @GetMapping("/touros/{data}")
-
-    public ResponseEntity<Integer> calcularTouros(
-            @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
-            @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
-        TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
-        Calendar calendar = Calendar.getInstance(timeZone);
-        calendar.setTime(data);
-        int tourosDisponiveis = controleDeGadoService.calcularTouros(calendar.getTime());
-        return ResponseEntity.ok(tourosDisponiveis);
-    }
+    /*
+     * @GetMapping("/classificacao/{classificacao}")
+     * public ResponseEntity<Integer> contarPorClassificacao(@PathVariable String
+     * classificacao) {
+     * int quantidade = controleDeGadoService.contarPorClassificacao(classificacao);
+     * return ResponseEntity.ok(quantidade);
+     * }
+     * 
+     * 
+     * @GetMapping("/disponiveis/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularCabeçasDisponiveis(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int cabeçasDisponiveis =
+     * controleDeGadoService.calcularCabeçasDisponiveis(calendar.getTime());
+     * return ResponseEntity.ok(cabeçasDisponiveis);
+     * }
+     * /*
+     * 
+     * @GetMapping("/vitelos/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularVitelos(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int vitelosDisponiveis =
+     * controleDeGadoService.calcularVitelos(calendar.getTime());
+     * return ResponseEntity.ok(vitelosDisponiveis);
+     * }
+     * 
+     * @GetMapping("/superPrecoce/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularNovilhosSuperPrecoce(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int NovilhosSuperPrecoceDisponiveis =
+     * controleDeGadoService.calcularNovilhosSuperPrecoce(calendar.getTime());
+     * return ResponseEntity.ok(NovilhosSuperPrecoceDisponiveis);
+     * }
+     * 
+     * @GetMapping("/precoce/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularNovilhosPrecoce(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int NovilhosPrecoceDisponiveis =
+     * controleDeGadoService.calcularNovilhosPrecoce(calendar.getTime());
+     * return ResponseEntity.ok(NovilhosPrecoceDisponiveis);
+     * }
+     * 
+     * @GetMapping("/novilhos/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularNovilhos(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int NovilhosDisponiveis =
+     * controleDeGadoService.calcularNovilhos(calendar.getTime());
+     * return ResponseEntity.ok(NovilhosDisponiveis);
+     * }
+     * 
+     * @GetMapping("/bois/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularBois(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int boisDisponiveis = controleDeGadoService.calcularBois(calendar.getTime());
+     * return ResponseEntity.ok(boisDisponiveis);
+     * }
+     * 
+     * @GetMapping("/touros/{data}")
+     * 
+     * public ResponseEntity<Integer> calcularTouros(
+     * 
+     * @PathVariable @DateTimeFormat(iso = ISO.DATE) Date data,
+     * 
+     * @RequestParam(value = "timeZone", defaultValue = "UTC") String timeZoneId) {
+     * TimeZone timeZone = TimeZone.getTimeZone(timeZoneId);
+     * Calendar calendar = Calendar.getInstance(timeZone);
+     * calendar.setTime(data);
+     * int tourosDisponiveis =
+     * controleDeGadoService.calcularTouros(calendar.getTime());
+     * return ResponseEntity.ok(tourosDisponiveis);
+     * }
+     */
 
     @GetMapping("/cabeças-de-gado")
     public Page<ControleDeGado> listarCabeçasDeGadoPaginado(@RequestParam(defaultValue = "0") int page) {
-        return controleDeGadoService.listarCabeçasDeGadoPaginado(page, 50);
+        return controleDeGadoService.listarCabeçasDeGadoPaginado(page, 500);
     }
-
-    @DeleteMapping("/delete/{id}")
-    public void deleteById(@PathVariable("id") UUID id) {
-        controleDeGadoService.deleteById(id);
-    }
-
     /*
+     * @DeleteMapping("/delete/{id}")
+     * public void deleteById(@PathVariable("id") UUID id) {
+     * controleDeGadoService.deleteById(id);
+     * }
+     * 
+     * /*
+     * 
      * @PutMapping("/editar/{numeroIdentificacao}")
      * public ResponseEntity<String>
      * atualizarAnimal(@PathVariable("numeroIdentificacao") String

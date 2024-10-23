@@ -48,49 +48,44 @@
       text-decoration: none;
     }
 
-    /*.container {
-  display: flex;
-  flex-wrap: wrap;
-  grid-gap: 10px; /* Simply adjust this value !*/
-    /*grid-template-columns: repeat(3, 1fr); /* OR grid-template-columns: 1fr 1fr 1fr;*/
-    /*grid-auto-rows: 1fr; 
-  justify-content: center;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  width: 70%;
-}
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      grid-gap: 10px;
+      /* Simply adjust this value !*/
+      grid-template-columns: repeat(2, 1fr);
+      /* OR grid-template-columns: 1fr 1fr 1fr;*/
+      grid-auto-rows: 1fr;
+      justify-content: center;
+      text-align: center;
+      margin-left: auto;
+      margin-right: auto;
+      width: 80%;
+    }
 
-.container > div:nth-child(1) {
-	background-color: #006400;
-  border-radius: 20px;
-  width: 19%;
-  padding-bottom: 20px; 
-  margin-top: 20px;
-  }
+    .container>div:nth-child(1) {
+      /*background-color: #006400;*/
+      border-radius: 10px;
+      width: 65%;
+      padding-bottom: 20px;
+      margin-top: 20px;
+    }
 
-.container > div:nth-child(2) {
-  width: 49%;
-  padding-bottom: 20px;
-  margin-right: 4%;
-  margin-left: 4%;
-  }
+    .container>div:nth-child(2) {
+      width: 20%;
+      padding-bottom: 20px;
+      margin-right: 4%;
+      margin-left: 10%;
+      margin-top: 50px;
+    }
 
-.container > div:nth-child(3) {
- background-color: #006400;
- border-radius: 20px;	
-  width: 19%;
-  padding-bottom: 20px;
-  padding-right: 1%;
-  padding-left: 1%;
-  margin-top: 20px;
- }
 
-.container>div {
-	height: 100%;
-}*/
 
-    #listaAnimais {
+    .container>div {
+      height: 100%;
+    }
+
+    */ #listaAnimais {
       text-align: center;
       width: 70%;
       padding-bottom: 20px;
@@ -429,60 +424,6 @@
         $(this).val("");
       });
     });
-
-    /*const ticker = document.querySelector('.ticker')
-    const list = document.querySelector('.ticker__list')
-    
-    let gg = false
-    // ANIMATION WILL PLAY FOR 2S AND THEN FREEZE
-    // TO DEMONSTRATE THE PROBLEM
-    setTimeout(() => {
-      gg = true
-      while(gg) {
-      // event loop is blocked
-      // animation freezes if translateX is a %
-      // animation continues if translateX is set to pixels
-        
-      }
-    }, 2000)
-    
-    
-    
-    setTimeout(() => {
-      gg = false
-    }, 3000)
-    
-    function fetchCurrencyData() {
-      return fetch('https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL')
-        .then(response => response.json())
-        .then(data => data);
-    }
-    
-    function updateCurrencyPrices() {
-      fetchCurrencyData()
-        .then(data => {
-          // Suponha que a API retorna os dados em um objeto com os códigos das moedas como chaves
-          const usdBrlPrice = data['USDBRL'].bid;
-          const eurBrlPrice = data['EURBRL'].bid;
-          const btcBrlPrice = data['BTCBRL'].bid;
-    
-          // Atualize o elemento <span id="usdPrice"> dentro do primeiro item da div
-          const usdItem = document.getElementById('usdItem');
-          usdItem.querySelector('span#usdPrice').textContent = `USD-BRL: ${usdBrlPrice}`;
-    
-          // Atualize os elementos HTML com os novos preços (se necessário)
-          document.getElementById('eurPrice').textContent = `EUR-BRL: ${eurBrlPrice}`;
-          document.getElementById('btcPrice').textContent = `BTC-BRL: ${btcBrlPrice}`;
-        })
-        .catch(error => {
-          console.error('Erro ao buscar dados da API:', error);
-        });
-    }
-    
-    // Atualize os preços a cada 60 segundos (ajuste conforme necessário)
-    setInterval(updateCurrencyPrices, 60000); // 60 segundos em milissegundos
-    */
-
   </script>
 
 </head>
@@ -504,10 +445,6 @@
         <a href="consultaCategoria.html">Gado de Corte</a>
         <a href="temperatura.html">Controle de Temperatura</a>
       </p>
-
-
-
-
     </div>
   </h3>
 
@@ -562,51 +499,76 @@
   </div>
   <!-- TradingView Widget END -->
 
+  <div class="container">
+    <div id="listaAnimais">
 
-  <div id="listaAnimais">
 
+      <h2>ANÁLISE DE DADOS TEMPERATURA E UMIDADE
+        <p></p>
 
-    <h2>Listar todos os animais
-      <p></p>
+        <button onclick="consultarTotalAnimais()">Consultar</button>
+      </h2>
 
-      <button onclick="consultarTotalAnimais()">Listar animais</button>
-    </h2>
+      <form id="formularioEdicao" style="display: none;">
+        <label for="campoNumeroProdutor">Número Produtor:</label>
+        <input type="text" id="campoNumeroProdutor">
+        <label for="campoNomeAnimal">Nome do Animal:</label>
+        <input type="text" id="campoNomeAnimal">
+        <label for="campoDataNascimento">Data de Nascimento:</label>
+        <input type="text" id="campoDataNascimento">
+        <label for="campoPeso">Peso:</label>
+        <input type="text" id="campoPeso">
+        <label for="campoNumeroPropriedade">Número da Propriedade:</label>
+        <input type="text" id="campoNumeroPropriedade">
+        <button type="button" onclick="salvarEdicao()">Salvar</button>
+      </form>
 
-    <form id="formularioEdicao" style="display: none;">
-      <label for="campoNumeroProdutor">Número Produtor:</label>
-      <input type="text" id="campoNumeroProdutor">
-      <label for="campoNomeAnimal">Nome do Animal:</label>
-      <input type="text" id="campoNomeAnimal">
-      <label for="campoDataNascimento">Data de Nascimento:</label>
-      <input type="text" id="campoDataNascimento">
-      <label for="campoPeso">Peso:</label>
-      <input type="text" id="campoPeso">
-      <label for="campoNumeroPropriedade">Número da Propriedade:</label>
-      <input type="text" id="campoNumeroPropriedade">
-      <button type="button" onclick="salvarEdicao()">Salvar</button>
-    </form>
+      <div id="divConteudo">
+        <table id="tabelaAnimais">
+          <thead>
+            <tr>
+              <th style="width: 14%;">Data</th>
+              <th style="width: 14%;">Hora</th>
+              <th style="width: 14%;">Temperatura</th>
+              <th style="width: 14%;">Umidade</th>
 
-    <div id="divConteudo">
-      <table id="tabelaAnimais">
+            </tr>
+            <tr>
+              <th><input type="text" id="txtColuna1" /></th>
+              <th><input type="text" id="txtColuna2" /></th>
+              <th><input type="text" id="txtColuna3" /></th>
+              <th><input type="text" id="txtColuna1" /></th>
+
+            </tr>
+          </thead>
+          <tbody>
+          <tbody>
+            <!-- Aqui serão adicionadas as linhas da tabela -->
+          </tbody>
+
+        </table>
+      </div>
+    </div>
+    <div>
+      <table id="analise">
         <thead>
           <tr>
-            <th style="width: 14%;">Nº do Produtor</th>
-            <th style="width: 14%;">Nº do Animal</th>
-            <th style="width: 14%;">Nome do Animal</th>
-            <th style="width: 14%;">Data de nascimento</th>
-            <th style="width: 14%;">Peso</th>
-            <th style="width: 14%;">Nº da Propriedade</th>
-            <th style="width: 14%;">Classificação</th>
-            <th style="width: 15%;">Editar/Excluir</th>
+            <th style="width: 14%;">MÉDIA TEMPERATURA</th>
           </tr>
           <tr>
-            <th><input type="text" id="txtColuna1" /></th>
-            <th><input type="text" id="txtColuna2" /></th>
-            <th><input type="text" id="txtColuna3" /></th>
-            <th><input type="text" id="txtColuna1" /></th>
-            <th><input type="text" id="txtColuna2" /></th>
-            <th><input type="text" id="txtColuna3" /></th>
-            <th><input type="text" id="txtColuna1" /></th>
+            <th>
+              <id="txtColuna1" />22.74
+            </th>
+          </tr>
+          <br>
+          </br>
+          <tr>
+            <th style="width: 14%;">MÉDIA TEMPERATURA</th>
+          </tr>
+          <tr>
+            <th>
+              <id="txtColuna1" />22.74
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -617,7 +579,6 @@
       </table>
     </div>
   </div>
-
 
 
 
@@ -881,15 +842,34 @@
           divQtdTouros.style.height = "auto";
         });
     });
+    // Chama a função consultarTotalAnimais quando a página carregar
+    window.onload = consultarTotalAnimais;
 
+    // Função para consultar o total de animais com paginação manual
+    async function consultarTotalAnimais() {
+      let size = 500;
+      let page = 0;
+      let allData = [];
+      let hasMore = true;
 
-    // Função para consultar o total de animais
-    function consultarTotalAnimais() {
-      fetch('/animal/cabeças-de-gado?size=500')
-        .then(response => response.json())
-        .then(data => preencherTabela(data.content))
-        .catch(error => console.error(error));
-    };
+      // Paginação manual para buscar todos os dados
+      while (hasMore) {
+        const response = await fetch(`/animal/cabeças-de-gado?size=${size}&page=${page}`);
+        const data = await response.json();
+
+        console.log('Dados recebidos:', data); // Verifica os dados recebidos
+
+        // Concatena os dados obtidos
+        allData = allData.concat(data.content);
+
+        // Verifica se há mais dados para buscar
+        hasMore = data.content.length === size;
+        page++;
+      }
+
+      // Preenche a tabela com todos os dados
+      preencherTabela(allData);
+    }
 
     // Objeto para armazenar a ordenação da tabela
     let ordenacao = {
@@ -909,42 +889,23 @@
       animais.forEach(animal => {
         const tr = document.createElement('tr');
 
-        // Converte a data para o formato dd/mm/aaaa
-        const dataNascimento = new Date(animal.dataNascimento);
-        const dia = dataNascimento.getDate().toString().padStart(2, '0');
-        const mes = (dataNascimento.getMonth() + 1).toString().padStart(2, '0');
-        const ano = dataNascimento.getFullYear().toString();
-        const dataFormatada = `${dia}/${mes}/${ano}`;
-
         tr.innerHTML = `
   <td data-coluna="numeroProdutor">${animal.numeroProdutor}</td>
-  <td data-coluna="numeroIdentificacao">${animal.numeroIdentificacao}</td>
-  <td data-coluna="nomeAnimal">${animal.nomeAnimal}</td>
-  <td data-coluna="dataFormatada">${dataFormatada}</td>
-  <td data-coluna="peso">${animal.peso} Kg</td>
-  <td data-coluna="numeroPropriedade">${animal.numeroPropriedade}</td>
-  <td data-coluna="classificacao">${animal.classificacao}</td>
-  <td>
-    <button type="button" class="btn_edit" onclick="editarAnimal()">
-    <span class="material-symbols-outlined">
-stylus
-</span>
-  </button>
-    
-    <button type="button" class="btn_delete" onclick="deleteAnimal()">
-    <span class="material-symbols-outlined">
-delete
-</span>
-    </button>
-  </td>
-`;
+  <td data-coluna="nomeAnimal">${animal.cpfProdutor}</td>
+  <td data-coluna="numeroPropriedade">${animal.numeroPropriedade}°C</td>
+  <td data-coluna="numeroIdentificacao">${animal.numeroIdentificacao}%</td>
+  `;
         tbody.appendChild(tr);
       });
 
-
-      // Adiciona os campos de filtro
-
     }
+
+    // Chama a função consultarTotalAnimais quando a página carregar
+    window.onload = consultarTotalAnimais;
+
+    // Adiciona os campos de filtro
+
+
 
     // Adiciona os listeners de eventos aos títulos das colunas
     /*const tabela = document.getElementById('tabelaAnimais');
