@@ -4,15 +4,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
+//import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import java.util.stream.Collectors;
 import com.api.projeto.integrador.models.ControleDeGado;
 import com.api.projeto.integrador.repositories.ControleDeGadoRepository;
+import java.util.Map;
 
 @Service
 public class ControleDeGadoService {
@@ -30,6 +31,24 @@ public class ControleDeGadoService {
 
     public List<ControleDeGado> buscarPorNumeroIdentificacao(String numeroIdentificacao) {
         return controleDeGadoRepository.findByNumeroIdentificacao(numeroIdentificacao);
+    }
+
+    public Map<String, Object> calcularMediaTemperaturaPorData() {
+        List<ControleDeGado> registros = controleDeGadoRepository.findAll();
+
+        // Agrupa os registros por numeroProdutor e calcula a média para cada grupo
+        return registros.stream()
+                .collect(Collectors.groupingBy(
+                        ControleDeGado::getNumeroProdutor,
+                        Collectors.collectingAndThen(
+                                Collectors.toList(),
+                                lista -> {
+                                    double temperaturaMedia = lista.stream()
+                                            .collect(Collectors.averagingDouble(ControleDeGado::getNumeroPropriedade));
+                                    double umidadeMedia = lista.stream().collect(
+                                            Collectors.averagingDouble(ControleDeGado::getNumeroIdentificacao));
+                                    return Map.of("temperaturaMedia", temperaturaMedia, "umidadeMedia", umidadeMedia);
+                                })));
     }
 
     public double calcularMediaTemperatura() {

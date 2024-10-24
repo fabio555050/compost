@@ -509,11 +509,24 @@
         const data = await response.json();
         console.log('Dados recebidos:', data); // Verifique a estrutura dos dados
 
-        const chartData = [['Data', 'temperatura', 'umidade']];
+        // Agregar os dados por numeroProdutor
+        const aggregatedData = data.reduce((acc, animal) => {
+          if (!acc[animal.numeroProdutor]) {
+            acc[animal.numeroProdutor] = { sumPropriedade: 0, sumIdentificacao: 0, count: 0 };
+          }
+          acc[animal.numeroProdutor].sumPropriedade += parseFloat(animal.numeroPropriedade);
+          acc[animal.numeroProdutor].sumIdentificacao += parseFloat(animal.numeroIdentificacao);
+          acc[animal.numeroProdutor].count += 1;
+          return acc;
+        }, {});
 
-        data.forEach(animal => {
-          chartData.push([animal.numeroProdutor, parseFloat(animal.numeroPropriedade), parseFloat(animal.numeroIdentificacao)]);
-        });
+        // Calcular as médias e preparar os dados para o gráfico
+        const chartData = [['Data', 'temperatura', 'umidade']];
+        for (const numeroProdutor in aggregatedData) {
+          const avgPropriedade = aggregatedData[numeroProdutor].sumPropriedade / aggregatedData[numeroProdutor].count;
+          const avgIdentificacao = aggregatedData[numeroProdutor].sumIdentificacao / aggregatedData[numeroProdutor].count;
+          chartData.push([numeroProdutor, avgPropriedade, avgIdentificacao]);
+        }
 
         return chartData;
       } catch (error) {

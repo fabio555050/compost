@@ -1,5 +1,6 @@
 package com.api.projeto.integrador.controllers;
 
+//import org.hibernate.mapping.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.api.projeto.integrador.models.ControleDeGado;
 import com.api.projeto.integrador.services.ControleDeGadoService;
 import java.util.List;
-
+import java.util.Map;
 import antlr.collections.List;
 
 @RestController
@@ -33,6 +34,12 @@ public class ControleDeGadoController {
     public ResponseEntity<List<ControleDeGado>> obterDadosAnimais() {
         List<ControleDeGado> registros = controleDeGadoService.buscarTodos();
         return ResponseEntity.ok(registros);
+    }
+
+    @GetMapping("/medias")
+    public ResponseEntity<Map<String, Object>> obterMediasPorNumeroProdutor() {
+        Map<String, Object> medias = controleDeGadoService.calcularMediaTemperaturaPorData();
+        return ResponseEntity.ok(medias);
     }
 
     @GetMapping("/temperatura/media")
