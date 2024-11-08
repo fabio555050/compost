@@ -60,23 +60,26 @@
       text-align: center;
       margin-left: auto;
       margin-right: auto;
-      width: 80%;
+      width: 100%;
     }
 
     .container>div:nth-child(1) {
       /*background-color: #006400;*/
       border-radius: 10px;
-      width: 65%;
+      width: 30%;
       padding-bottom: 20px;
-      margin-top: 20px;
+      margin-top: 0px;
+
+
     }
 
     .container>div:nth-child(2) {
-      width: 20%;
+      width: 50%;
       padding-bottom: 20px;
-      margin-right: 4%;
-      margin-left: 6%;
-      margin-top: 40px;
+      margin-right: 0.5%;
+      margin-left: 0;
+      margin-top: 0px;
+      text-align: center;
     }
 
 
@@ -85,12 +88,24 @@
       height: 100%;
     }
 
-    */ #listaAnimais {
+    #listaAnimais {
       text-align: center;
-      width: 70%;
+      width: 45%;
       padding-bottom: 20px;
-      margin: auto;
+
     }
+
+    #analise,
+    #analise2,
+    #analise3,
+    #analise4,
+    #analise5,
+    #analise6 {
+      width: 40%;
+      text-align: center;
+      margin: auto;
+      margin-bottom: 15px;
+      }
 
     #disponiveis {
       border: 1px solid black;
@@ -255,12 +270,12 @@
     #linha1 {
       color: white;
       background-color: #223b48;
-      padding: 5px;
+      padding: 3px;
     }
 
     .linha2 {
       background-color: #EFEDED;
-      padding: 5px;
+      padding: 3px;
     }
 
     th {
@@ -413,6 +428,8 @@
     br {
       margin-top: 15px;
     }
+
+    #chart_div {}
   </style>
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.7.2.min.js"></script>
@@ -438,11 +455,7 @@
 
   </script>
 
-  <select id="dataFilter" onchange="drawStuff()">
-    <option value="all">Todos</option>
-    <option value="top10">Top 10</option>
-    <!-- Adicione outros filtros conforme necessário -->
-  </select>
+
 
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
@@ -458,8 +471,8 @@
       var materialOptions = {
         width: '100%',
         chart: {
-          title: 'Análise de Animais',
-          subtitle: 'Dados do controle de gado'
+          title: 'Médias diárias de Temperatura e Umidade',
+          subtitle: ''
         },
         series: {
           0: { axis: 'temperatura' },
@@ -479,7 +492,7 @@
           0: { targetAxisIndex: 0 },
           1: { targetAxisIndex: 1 }
         },
-        title: 'Análise de Animais - Temperatura e Umidade',
+        title: 'Médias diárias de Temperatura e Umidade',
         vAxes: {
           0: { title: 'Temperatura (°C)' },
           1: { title: 'Umidade (%)' }
@@ -500,7 +513,7 @@
         button.onclick = drawMaterialChart;
       }
 
-      drawMaterialChart();
+      drawClassicChart();
     }
 
     async function fetchAnimalData() {
@@ -542,7 +555,7 @@
 <body>
 
   <h1><img src="/images/logo.png" width="200px" height="130px">
-    GESTÃO DE MANEJO <br> <br> GADO DE LEITE E CORTE<img src="/images/logo.png" width="200px" height="130px">
+    GESTÃO DE MANEJO DE GADO<img src="/images/logo.png" width="200px" height="130px">
     <h9>Acessibilidade</h9><button id="aumentarFonte">A+</button>
     <button id="diminuirFonte">A-</button>
   </h1>
@@ -550,11 +563,10 @@
   <h3>
     <div id="area-menu">
       <p id="meuTexto"><a href="index.html">Home</a>
-        <a href="cadastro.html">Cadastro</a>
-        <a href="listaAnimais.html">Lista</a>
-        <a href="consulta.html">Gado de Leite</a>
-        <a href="consultaCategoria.html">Gado de Corte</a>
-        <a href="temperatura.html">Controle de Temperatura</a>
+
+        <a href="listaAnimais.html">Análise de dados IOT</a>
+
+        <a href="temperatura.html">Controle de Temperatura e Umidade</a>
       </p>
     </div>
   </h3>
@@ -611,10 +623,6 @@
   <!-- TradingView Widget END -->
   <h2>ANÁLISE DE DADOS TEMPERATURA E UMIDADE</h2>
 
-  <button id="change-chart">Change to Classic</button>
-  <br><br>
-  <div id="chart_div" style="width: 100%; height: 500px;"></div>
-
   <div class="container">
     <div id="listaAnimais">
       <div id="divConteudo">
@@ -644,6 +652,7 @@
       </div>
     </div>
     <div>
+
       <table id="analise">
 
         <tr id="linha1">
@@ -653,8 +662,8 @@
           <th class="linha2" id="mediaTemperatura"></th>
         </tr>
       </table>
-      <br>
-      <table id="analise">
+      
+      <table id="analise2">
 
         <tr id="linha1">
           <th id="linha1" style="width: 14%;">UMIDADE MÉDIA</th>
@@ -663,8 +672,8 @@
           <th class="linha2" id="mediaUmidade"></th>
         </tr>
       </table>
-      <br>
-      <table id="analise">
+      
+      <table id="analise3">
 
         <tr id="linha1">
           <th id="linha1" style="width: 14%;">TEMPERATURA MÁXIMA</th>
@@ -673,8 +682,8 @@
           <th class="linha2" id="temperaturaMaxima"></th>
         </tr>
       </table>
-      <br>
-      <table id="analise">
+      
+      <table id="analise4">
 
         <tr id="linha1">
           <th id="linha1" style="width: 14%;">UMIDADE MÁXIMA</th>
@@ -683,8 +692,8 @@
           <th class="linha2" id="umidadeMaxima"></th>
         </tr>
       </table>
-      <br>
-      <table id="analise">
+      
+      <table id="analise5">
 
         <tr id="linha1">
           <th id="linha1" style="width: 14%;">TEMPERATURA MÍNIMA</th>
@@ -693,8 +702,8 @@
           <th class="linha2" id="temperaturaMinima"></th>
         </tr>
       </table>
-      <br>
-      <table id="analise">
+      
+      <table id="analise6">
 
         <tr id="linha1">
           <th id="linha1" style="width: 14%;">UMIDADE MÍNIMA</th>
@@ -703,11 +712,14 @@
           <th class="linha2" id="umidadeMinima"></th>
         </tr>
       </table>
-      <br>
-      <button id="change-chart">Change to Classic</button>
+      
+      
+      <div id="chart_div" style="width: 100%; height: 500px; text-align:center"></div>
+      <button id="change-chart" style="text-align:center">Change to Classic</button>
       <br><br>
-      <div id="chart_div" style="width: 800px; height: 500px;"></div>
+
     </div>
+
   </div>
 
 
