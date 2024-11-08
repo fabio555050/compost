@@ -15,7 +15,6 @@ import com.api.projeto.integrador.models.ControleDeGado;
 import com.api.projeto.integrador.services.ControleDeGadoService;
 import java.util.List;
 import java.util.Map;
-import antlr.collections.List;
 
 @RestController
 @RequestMapping("/animal")
